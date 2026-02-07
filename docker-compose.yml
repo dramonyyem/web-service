@@ -1,9 +1,21 @@
+
 services:
   app:
     build: .
     container_name: project-x
+    # optional: remove port exposure if using tunnel only
     ports:
       - "3000:3000"
     env_file:
       - .env
     restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    env_file:
+      - .env
+    command: tunnel run ${CLOUDFLARE_TUNNEL_NAME} --no-autoupdate
+    volumes:
+      - ./cloudflared:/etc/cloudflared   # store credentials
