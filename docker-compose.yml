@@ -1,3 +1,4 @@
+version: "3.9"
 
 services:
   app:
@@ -18,4 +19,4 @@ services:
       - .env
     command: tunnel run ${CLOUDFLARE_TUNNEL_NAME} --no-autoupdate
     volumes:
-      - ./cloudflared:/etc/cloudflared   # store credentials
+      - ./cloudflared:/etc/cloudflared
