@@ -2,12 +2,13 @@ services:
   app:
     build: .
     container_name: project-x
-    # optional: remove port exposure if using tunnel only
     ports:
       - "3000:3000"
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      - project-x-network
 
   cloudflared:
     image: cloudflare/cloudflared:latest
@@ -18,3 +19,9 @@ services:
       TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
     volumes:
       - ./cloudflared:/etc/cloudflared
+    networks:
+      - project-x-network
+
+networks:
+  project-x-network:
+    driver: bridge
